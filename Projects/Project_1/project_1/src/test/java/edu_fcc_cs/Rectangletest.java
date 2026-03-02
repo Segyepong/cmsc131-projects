@@ -7,10 +7,11 @@ import org.junit.Test;
 public class Rectangletest {
 
     @Test
-    public void testgetX()
+    public void testinRectangle()
     {
-        Point tester = new Point(4,3);
-        assertEquals(4, tester.getX(), 0.0001);
+        Rectangle tester = new Rectangle(new Point(4, 3), new Point(6, 8));
+        assertEquals(true, tester.inRectangle(new Point(5,5)));
+        
     }
     
 }

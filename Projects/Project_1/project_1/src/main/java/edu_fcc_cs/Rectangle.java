@@ -1,20 +1,23 @@
 package edu_fcc_cs;
 
 public class Rectangle {
-    private double llx;
-    private double lly;
-    private double urx;
-    private double ury;
+    private Point lleft;
+    private Point uright;
 
-    public Rectangle(double llx, double lly, double urx, double ury){
-        this.llx = llx;
-        this.lly = lly;
-        this.urx = urx;
-        this.ury = ury;
+    public Rectangle(Point lleft, Point uright){
+        this.lleft = lleft;
+        this.uright = uright;
     }
 
-    public boolean inRectangle(){
-        return true;
+
+    public boolean inRectangle(Point point){
+        double x = point.getX();
+        double y = point.getY();
+        if(x >= lleft.getX() && x<= uright.getX() && y >= lleft.getY() && y <= uright.getY()){
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }
