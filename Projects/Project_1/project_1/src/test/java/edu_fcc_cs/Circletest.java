@@ -9,10 +9,10 @@ import org.junit.Test;
 public class Circletest {
 
     @Test
-    public void testgetX()
+    public void testinCircle()
     {
-        Point tester = new Point(4,3);
-        assertEquals(4, tester.getX(), 0.0001);
+        Circle tester = new Circle(new Point(3, 5), 3);
+        assertEquals(true, tester.inCircle(new Point(5,7)));
     }
     
 }
