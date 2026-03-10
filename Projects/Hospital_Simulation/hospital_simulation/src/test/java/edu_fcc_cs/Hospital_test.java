@@ -1,11 +1,26 @@
 package edu_fcc_cs;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 public class Hospital_test {
     @Test
-    public void shouldAnswerWithTrue()
+    public void addPatient_test()
     {
-        assertTrue( true );
+        Hospital h = new Hospital(10);
+        Patient p = new Patient();
+
+        h.addPatient(p);
+
+        assertEquals(1, h.getPatientCount());
+    }
+    @Test
+    public void testGetPatient() {
+
+        Hospital h = new Hospital(10);
+        Patient p = new Patient();
+
+        h.addPatient(p);
+
+        assertEquals(p, h.getPatient(0));
     }
 }
