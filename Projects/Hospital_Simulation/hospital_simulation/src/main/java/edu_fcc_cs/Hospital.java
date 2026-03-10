@@ -26,5 +26,9 @@ public class Hospital {
     public int getPatientCount() {
         return patientCount;
     }
+
+    public Patient[] getPatients() {
+    return patients;
+    }
 }
 
