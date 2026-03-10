@@ -1,13 +1,14 @@
 package edu_fcc_cs;
 
-/**
- * Hello world!
- *
- */
+
 public class Main 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Simulation sim = new Simulation();
+
+        sim.setup();
+        sim.run();
+        sim.process();
     }
 }
