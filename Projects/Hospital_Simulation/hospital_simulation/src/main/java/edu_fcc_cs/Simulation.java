@@ -26,12 +26,28 @@ public class Simulation {
 
     public void run() {
 
-        while (currentTime < simulationLength) {
+    while (currentTime < simulationLength) {
 
-            currentTime++;
+        currentTime++;
 
+        for (int i = 0; i < hospital.getPatientCount(); i++) {
+
+            Patient p = hospital.getPatient(i);
+
+            for (Device d : p.getDevices()) {
+
+                Observation obs = d.poll(currentTime);
+
+                if (obs != null) {
+
+                    Alert alert = new Alert(obs);
+
+                    System.out.println(alert);
+                }
+            }
         }
     }
+}
 
     public void process() {
         System.out.println("Simulation complete.");
