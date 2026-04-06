@@ -2,67 +2,76 @@ package edu_fcc_cs;
 import java.util.Random;
 
 public class Simulation {
+
     private static Random rand = new Random();
 
     private Hospital hospital;
+    private Nurse[] nurses;
+    private AlertQueue completedQueue;
+
     private int currentTime;
+    private int endTime = 1000;
 
-    private int simulationLength = 144;
+    public Simulation() {}
 
-    public Simulation() {
-
+    public static Random getRandom() {
+        return rand;
     }
 
     public void setup() {
-        hospital = new Hospital(100);
 
-        // create some patients
+        hospital = new Hospital(10);
+
         for (int i = 0; i < 10; i++) {
             hospital.addPatient(Patient.createPatient());
         }
+
+        nurses = new Nurse[2];
+        nurses[0] = new Nurse("Nurse A");
+        nurses[1] = new Nurse("Nurse B");
+
+        completedQueue = new AlertQueue();
+
+        hospital.setCompletedQueue(completedQueue);
 
         currentTime = 0;
     }
 
     public void run() {
 
-    while (currentTime < simulationLength) {
+        while (currentTime < endTime) {
 
-        currentTime++;
+            hospital.update(currentTime);
 
-        for (int i = 0; i < hospital.getPatientCount(); i++) {
-
-            Patient p = hospital.getPatient(i);
-
-            for (Device d : p.getDevices()) {
-
-                Observation obs = d.poll(currentTime);
-
-                if (obs != null) {
-
-                    Alert alert = new Alert(obs);
-
-                    System.out.println(alert);
-                }
+            for (int i = 0; i < nurses.length; i++) {
+                nurses[i].resolve(currentTime, hospital);
             }
+
+            currentTime += 10; 
         }
     }
-}
 
     public void process() {
-        System.out.println("Simulation complete.");
-        System.out.println("Total Patients: " + hospital.getPatientCount());
-    }
 
-    public static int getRandomInt(int bound) {
-        return rand.nextInt(bound);
-    }
+        int sum = 0;
+        int max = 0;
+        int count = 0;
 
-    public Hospital getHospital() {
-        return hospital;
-    }
+        Alert a;
 
-    public int getCurrentTime() {
-        return currentTime;
+        while ((a = completedQueue.dequeue()) != null) {
+            int t = a.getResolutionTime();
+
+            sum += t;
+            if (t > max) max = t;
+            count++;
+        }
+
+        if (count > 0) {
+            System.out.println("Average time: " + (sum / count));
+            System.out.println("Max time: " + max);
+        } else {
+            System.out.println("No completed alerts.");
+        }
     }
 }

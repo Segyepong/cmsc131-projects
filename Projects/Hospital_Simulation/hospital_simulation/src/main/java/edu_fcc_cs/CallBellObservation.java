@@ -10,4 +10,14 @@ public class CallBellObservation extends Observation {
     public String getType() {
         return "Call Bell";
     }
+
+    @Override
+    public boolean dangerous() {
+        return true;
+    }
+
+    @Override
+    public String data() {
+        return "Patient requested assistance";
+    }
 }

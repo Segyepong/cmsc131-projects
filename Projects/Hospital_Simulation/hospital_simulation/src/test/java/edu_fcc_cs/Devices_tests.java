@@ -1,9 +1,10 @@
 package edu_fcc_cs;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class Devices_tests {
-   @Test
+    @Test
     public void testHeartRateMonitorPollReturnsObservation() {
 
         Patient p = new Patient();
@@ -96,5 +97,13 @@ public class Devices_tests {
         if (obs != null) {
             assertEquals(p, obs.getPatient());
         }
+    }
+
+    @Test
+    public void testDeviceNotNull() {
+        Patient p = new Patient();
+        Device d = new BloodPressureMonitor(p);
+
+        assertNotNull(d);
     }
 }

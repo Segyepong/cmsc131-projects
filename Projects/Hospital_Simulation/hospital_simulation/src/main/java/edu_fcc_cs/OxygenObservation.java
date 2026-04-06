@@ -2,19 +2,30 @@ package edu_fcc_cs;
 
 public class OxygenObservation extends Observation {
 
-    private int oxygenLevel;
+    private int spo2;
 
-    public OxygenObservation(Patient patient, int time, int oxygenLevel) {
+    public OxygenObservation(Patient patient, int time, int spo2) {
         super(patient, time);
-        this.oxygenLevel = oxygenLevel;
-    }
-
-    public int getOxygenLevel() {
-        return oxygenLevel;
+        this.spo2 = spo2;
     }
 
     @Override
     public String getType() {
-        return "Oxygen Level";
+        return "Oxygen Saturation";
+    }
+
+    @Override
+    public boolean dangerous() {
+        return spo2 < 90;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " - " + spo2 + "%";
+    }
+
+    @Override
+    public String data() {
+        return spo2 + "%";
     }
 }

@@ -8,9 +8,10 @@ public class HeartRateMonitor extends Device {
 
     @Override
     public Observation poll(int time) {
+        int bpm = 50 + (int)(Math.random() * 100); 
 
-        int rate = Simulation.getRandomInt(40) + 60;
+        HeartRateObservation obs = new HeartRateObservation(patient, time, bpm);
 
-        return new HeartRateObservation(patient, time, rate);
+        return obs.dangerous() ? obs : null;
     }
 }

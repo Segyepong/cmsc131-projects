@@ -20,9 +20,13 @@ public abstract class Observation {
 
     public abstract String getType();
 
+    public abstract boolean dangerous();
+
+    public abstract String data();
+
     @Override
     public String toString() {
-        return "Observation: " + getType() + " from patient " +
-                patient.getID() + " at time " + time;
+        return getType() + " at time " + time +
+                " for patient " + patient.getID();
     }
 }

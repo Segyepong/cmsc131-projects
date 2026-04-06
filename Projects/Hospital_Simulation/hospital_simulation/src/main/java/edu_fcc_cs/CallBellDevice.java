@@ -8,11 +8,10 @@ public class CallBellDevice extends Device {
 
     @Override
     public Observation poll(int time) {
-
-        if (Simulation.getRandomInt(20) == 0) {
+        boolean pressed = Math.random() < 0.05; 
+        if (pressed) {
             return new CallBellObservation(patient, time);
         }
-
         return null;
     }
 }

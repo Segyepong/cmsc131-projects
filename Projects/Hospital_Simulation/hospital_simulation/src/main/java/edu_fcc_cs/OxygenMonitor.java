@@ -8,9 +8,10 @@ public class OxygenMonitor extends Device {
 
     @Override
     public Observation poll(int time) {
+        int spo2 = 85 + (int)(Math.random() * 15);  
 
-        int oxygen = Simulation.getRandomInt(10) + 90;
+        OxygenObservation obs = new OxygenObservation(patient, time, spo2);
 
-        return new OxygenObservation(patient, time, oxygen);
+        return obs.dangerous() ? obs : null;
     }
 }

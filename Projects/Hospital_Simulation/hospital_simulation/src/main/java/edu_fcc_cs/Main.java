@@ -10,5 +10,6 @@ public class Main
         sim.setup();
         sim.run();
         sim.process();
+        
     }
 }

@@ -1,11 +1,12 @@
 package edu_fcc_cs;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
 public class Hospital_test {
     @Test
-    public void addPatient_test()
-    {
+    public void addPatient_test() {
         Hospital h = new Hospital(10);
         Patient p = new Patient();
 
@@ -13,6 +14,7 @@ public class Hospital_test {
 
         assertEquals(1, h.getPatientCount());
     }
+
     @Test
     public void testGetPatient() {
 
@@ -22,5 +24,19 @@ public class Hospital_test {
         h.addPatient(p);
 
         assertEquals(p, h.getPatient(0));
+    }
+
+    @Test
+    public void testHospitalQueue() {
+        Hospital h = new Hospital(10);
+
+        Patient p = new Patient();
+        Observation obs = new BloodPressureObservation(p, 1, 150);
+
+        Alert a = new Alert(obs, 1, true);
+
+        h.addAlert(a);
+
+        assertNotNull(h.getNextAlert());
     }
 }

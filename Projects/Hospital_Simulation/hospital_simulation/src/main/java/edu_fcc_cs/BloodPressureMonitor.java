@@ -8,9 +8,11 @@ public class BloodPressureMonitor extends Device {
 
     @Override
     public Observation poll(int time) {
+        int systolic = 100 + (int)(Math.random() * 100);  
+        int diastolic = 60 + (int)(Math.random() * 70);  
 
-        int systolic = Simulation.getRandomInt(40) + 100;
+        BloodPressureObservation obs = new BloodPressureObservation(patient, time, systolic, diastolic);
 
-        return new BloodPressureObservation(patient, time, systolic);
+        return obs.dangerous() ? obs : null;
     }
 }
