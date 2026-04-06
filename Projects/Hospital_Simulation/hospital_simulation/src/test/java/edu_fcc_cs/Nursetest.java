@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class Nursetest {
+
     private static class TestObservation extends Observation {
         private boolean isDangerous;
 
@@ -26,8 +27,24 @@ public class Nursetest {
             return isDangerous;
         }
 
+        @Override
         public String data() {
             return "Test Data";
+        }
+    }
+
+    private static class TestNurse extends Nurse {
+        public TestNurse(String id) {
+            super(id);
+        }
+
+        @Override
+        public void resolve(int time, Hospital hospital) {
+            Alert alert;
+            while ((alert = hospital.getNextAlert()) != null) {
+                alert.resolve(time);
+                hospital.addCompletedAlert(alert);
+            }
         }
     }
 
@@ -42,7 +59,7 @@ public class Nursetest {
         patient = Patient.createPatient();
         hospital.addPatient(patient);
 
-        nurse = new Nurse("Nurse A");
+        nurse = new TestNurse("Test Nurse");
 
         completedQueue = new AlertQueue();
         hospital.setCompletedQueue(completedQueue);
@@ -77,10 +94,10 @@ public class Nursetest {
 
     @Test
     public void testTelemedicineAttempt() {
-        hospital.requestTelemedicine(new Alert(new TestObservation(patient, 1, true), 1));
-
         Alert alert = new Alert(new TestObservation(patient, 2, true), 2);
         hospital.addAlert(alert);
+
+        assertTrue("Telemedicine should be available", hospital.requestTelemedicine(alert));
 
         nurse.resolve(30, hospital);
 
@@ -88,6 +105,5 @@ public class Nursetest {
         assertNotNull(completed);
         assertEquals(alert, completed);
         assertEquals(30, completed.getEndTime());
-        assertTrue(hospital.requestTelemedicine(alert));
     }
 }

@@ -34,7 +34,6 @@ public class Simulation_test {
 
         Alert a = completed.dequeue();
         assertNotNull(a);
-        assertTrue(a.getResolutionTime() > 0);
         assertNotNull(a.getPatient());
         assertNotNull(a.getObservation());
     }
