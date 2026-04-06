@@ -1,34 +1,55 @@
 package edu_fcc_cs;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
+
 public class Simulation_test {
-    @Test
-    public void testSetupCreatesHospital() {
 
-        Simulation sim = new Simulation();
+    private Simulation sim;
+
+    @Before
+    public void setup() {
+        sim = new Simulation();
         sim.setup();
-
-        assertNotNull(sim.getHospital());
     }
 
     @Test
-    public void testRunAdvancesTime() {
+    public void testSetup() {
+        assertNotNull(sim);
+        assertEquals(10, sim.getHospital().getPatientCount());
+    }
 
-        Simulation sim = new Simulation();
-        sim.setup();
-
+    @Test
+    public void testRunSimulationGeneratesCompletedAlerts() {
         sim.run();
 
-        assertTrue(sim.getCurrentTime() > 0);
+        AlertQueue completed = sim.getCompletedQueue();
+        int completedCount = completed.count();
+
+        assertTrue(completedCount > 0);
+
+        Alert a = completed.dequeue();
+        assertNotNull(a);
+        assertTrue(a.getResolutionTime() > 0);
+        assertNotNull(a.getPatient());
+        assertNotNull(a.getObservation());
     }
 
     @Test
-    public void testRandomNumber() {
+    public void testProcessOutputsStatistics() {
+        sim.run();
 
-        int num = Simulation.getRandomInt(10);
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
 
-        assertTrue(num >= 0 && num < 10);
+        sim.process();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Average time:") || output.contains("No completed alerts."));
+        assertTrue(output.contains("Max time:") || output.contains("No completed alerts."));
     }
 }

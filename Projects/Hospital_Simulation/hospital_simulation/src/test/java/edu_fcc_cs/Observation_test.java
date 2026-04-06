@@ -2,86 +2,70 @@ package edu_fcc_cs;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
-
-
 public class Observation_test {
-    @Test
-    public void testHeartRateObservationStoresHeartRate() {
+    private Patient patient;
 
-        Patient p = new Patient();
-        HeartRateObservation obs = new HeartRateObservation(p, 10, 75);
-
-        assertEquals(75, obs.getHeartRate());
+    @Before
+    public void setup() {
+        patient = Patient.createPatient();
     }
 
     @Test
-    public void testHeartRateObservationStoresTime() {
+    public void testBloodPressureObservationNormal() {
+        BloodPressureObservation obs = new BloodPressureObservation(patient, 5, 120, 80);
 
-        Patient p = new Patient();
-        HeartRateObservation obs = new HeartRateObservation(p, 20, 80);
-
-        assertEquals(20, obs.getTime());
+        assertEquals(patient, obs.getPatient());
+        assertEquals(5, obs.getTime());
+        assertEquals("Blood Pressure", obs.getType());
+        assertFalse(obs.dangerous());
+        assertEquals("120/80 mmHg", obs.data());
+        assertTrue(obs.toString().contains("Blood Pressure"));
+        assertTrue(obs.toString().contains("120/80"));
     }
 
     @Test
-    public void testBloodPressureObservationStoresValue() {
+    public void testBloodPressureObservationDangerous() {
+        BloodPressureObservation obs = new BloodPressureObservation(patient, 10, 190, 125);
 
-        Patient p = new Patient();
-        BloodPressureObservation obs =
-                new BloodPressureObservation(p, 15, 120);
-
-        assertEquals(120, obs.getSystolic());
+        assertTrue(obs.dangerous());
+        assertEquals("190/125 mmHg", obs.data());
     }
 
     @Test
-    public void testBloodPressureObservationStoresPatient() {
+    public void testOtherObservationSubclass() {
+        class HeartRateObservation extends Observation {
+            private int bpm;
 
-        Patient p = new Patient();
-        BloodPressureObservation obs =
-                new BloodPressureObservation(p, 15, 120);
+            public HeartRateObservation(Patient p, int time, int bpm) {
+                super(p, time);
+                this.bpm = bpm;
+            }
 
-        assertEquals(p, obs.getPatient());
-    }
+            @Override
+            public String getType() {
+                return "Heart Rate";
+            }
 
-    @Test
-    public void testOxygenObservationStoresLevel() {
+            @Override
+            public boolean dangerous() {
+                return bpm < 50 || bpm > 120;
+            }
 
-        Patient p = new Patient();
-        OxygenObservation obs =
-                new OxygenObservation(p, 10, 95);
+            @Override
+            public String data() {
+                return bpm + " bpm";
+            }
+        }
 
-        assertEquals(95, obs.getOxygenLevel());
-    }
+        HeartRateObservation hrObs = new HeartRateObservation(patient, 3, 130);
 
-    @Test
-    public void testOxygenObservationStoresTime() {
-
-        Patient p = new Patient();
-        OxygenObservation obs =
-                new OxygenObservation(p, 10, 95);
-
-        assertEquals(10, obs.getTime());
-    }
-
-    @Test
-    public void testCallBellObservationStoresPatient() {
-
-        Patient p = new Patient();
-        CallBellObservation obs =
-                new CallBellObservation(p, 25);
-
-        assertEquals(p, obs.getPatient());
-    }
-
-    @Test
-    public void testCallBellObservationStoresTime() {
-
-        Patient p = new Patient();
-        CallBellObservation obs =
-                new CallBellObservation(p, 25);
-
-        assertEquals(25, obs.getTime());
+        assertEquals("Heart Rate", hrObs.getType());
+        assertTrue(hrObs.dangerous());
+        assertEquals("130 bpm", hrObs.data());
+        assertTrue(hrObs.toString().contains("Heart Rate"));
+        assertTrue(hrObs.toString().contains("3"));
     }
 }

@@ -5,7 +5,6 @@ public class Hospital {
     private Patient[] patients;
     private int patientCount;
 
-    // 🔹 Alert queues
     private AlertQueue urgentQueue = new AlertQueue();
     private AlertQueue normalQueue = new AlertQueue();
 
@@ -42,7 +41,6 @@ public class Hospital {
         }
     }
 
-    // 🔹 Add alert to correct queue
     public void addAlert(Alert a) {
         if (a.isUrgent()) {
             urgentQueue.enqueue(a);
@@ -51,7 +49,6 @@ public class Hospital {
         }
     }
 
-    // 🔹 Priority dequeue
     public Alert getNextAlert() {
         Alert a = urgentQueue.dequeue();
         if (a == null) {
@@ -60,19 +57,16 @@ public class Hospital {
         return a;
     }
 
-    // 🔹 Set completed queue (from Simulation)
     public void setCompletedQueue(AlertQueue q) {
         this.completedQueue = q;
     }
 
-    // 🔹 Store completed alert
     public void addCompletedAlert(Alert a) {
         if (completedQueue != null) {
             completedQueue.enqueue(a);
         }
     }
 
-    // 🔹 Telemedicine request
     public boolean requestTelemedicine(Alert a) {
         if (activeTelemedicine < maxTelemedicine) {
             activeTelemedicine++;
@@ -81,7 +75,6 @@ public class Hospital {
         return false;
     }
 
-    // 🔹 Release telemedicine
     public void releaseTelemedicine() {
         if (activeTelemedicine > 0) {
             activeTelemedicine--;

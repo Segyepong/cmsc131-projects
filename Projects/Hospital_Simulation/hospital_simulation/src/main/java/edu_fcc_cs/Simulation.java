@@ -1,4 +1,5 @@
 package edu_fcc_cs;
+
 import java.util.Random;
 
 public class Simulation {
@@ -12,10 +13,19 @@ public class Simulation {
     private int currentTime;
     private int endTime = 1000;
 
-    public Simulation() {}
+    public Simulation() {
+    }
 
     public static Random getRandom() {
         return rand;
+    }
+
+    public Hospital getHospital() {
+        return hospital;
+    }
+
+    public AlertQueue getCompletedQueue() {
+        return completedQueue;
     }
 
     public void setup() {
@@ -47,7 +57,7 @@ public class Simulation {
                 nurses[i].resolve(currentTime, hospital);
             }
 
-            currentTime += 10; 
+            currentTime += 10;
         }
     }
 
@@ -63,7 +73,8 @@ public class Simulation {
             int t = a.getResolutionTime();
 
             sum += t;
-            if (t > max) max = t;
+            if (t > max)
+                max = t;
             count++;
         }
 
